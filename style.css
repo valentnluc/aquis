@@ -1,0 +1,81 @@
+/* --- style.css (Código completo para Aquis) --- */
+
+/* 1. IMPORTAR LA FUENTE */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+/* 2. APLICAR FUENTE (Tipografía) */
+body {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400; /* Peso normal para el texto general */
+}
+
+/* Aplicamos el peso "bold" (700) a los encabezados y texto importante */
+h1, h2, h3, h4, h5, h6,
+.display-3,
+.fw-bold,
+.card-title,
+.btn {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 700;
+}
+
+/* 3. APLICAR COLOR PRIMARIO (#007c00) */
+
+/* Botones Principales */
+.btn-primary {
+    background-color: #007c00;
+    border-color: #007c00;
+}
+
+.btn-primary:hover {
+    background-color: #005a00; /* Un verde más oscuro para el hover */
+    border-color: #005a00;
+}
+
+/* Textos con color primario */
+.text-primary {
+    color: #007c00 !important; 
+}
+
+/* Links de Navegación */
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-brand:hover {
+    color: #007c00; /* Color verde al pasar el mouse */
+}
+
+/* Actualizamos el color "success" para que sea nuestro color de marca */
+.text-success,
+.border-success {
+    color: #007c00 !important;
+    border-color: #007c00 !important;
+}
+
+.text-success .bi-check-circle-fill,
+.text-success .bi-check-circle {
+     color: #007c00 !important;
+}
+
+/* 4. ESTILO DEL HERO (Con efecto "Spotlight") */
+.hero-section {
+    /* Base: un fondo oscuro (coincide con el navbar 'bg-dark') */
+    background-color: #212529;
+
+    /* El gradiente "spotlight" que sigue al mouse */
+    /* Usa el color de tu marca (#007c00) con transparencia */
+    background-image: radial-gradient(
+        circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(0, 124, 0, 0.25), /* Un "resplandor" sutil de tu marca */
+        transparent 80%
+    );
+    background-repeat: no-repeat;
+    
+    /* Estilos existentes (no cambiar) */
+    height: 70vh;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Transición suave para cuando el mouse entra/sale */
+    transition: background 0.1s ease-out;
+}
