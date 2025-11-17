@@ -42,15 +42,15 @@
 
     <header class="hero-section text-center">
         <div class="container">
-            <h1 class="display-3 fw-bold">El equilibrio en la adquisición.<br>La precisión en la obra.</h1>
-            <p class="lead my-3">Optimizamos costos y logística para Estudios de Arquitectura y Contratistas Pymes.</p>
+            <h1 class="display-3 fw-bold">Suministros ordenados, márgenes recuperados.</h1>
+            <p class="lead my-3">Optimizamos costos y logística para Estudios y Contratistas.</p>
             <a href="#contacto" class="btn btn-primary btn-lg">Solicitar Propuesta</a>
         </div>
     </header>
 
     <section id="servicios" class="py-5 bg-light">
         <div class="container">
-            <h2 class="text-center mb-5">La confluencia de Nuestra Gestión</h2>
+            <h2 class="text-center mb-5">¿Dónde hacemos la diferencia?</h2>
             <p class="text-center lead mb-5">Vea cómo optimizamos su proyecto en comparación con el método tradicional.</p>
 
             <div class="row g-4 mb-4 align-items-stretch justify-content-center">
@@ -59,7 +59,7 @@
                     <div class="card h-100 border-danger border-2 shadow-sm">
                         <div class="card-body p-4">
                             <h5 class="card-title text-danger d-flex align-items: center">
-                                <i class="bi bi-x-circle-fill me-2 fs-4"></i>Sin Aquis (El Método Tradicional)
+                                <i class="bi bi-x-circle-fill me-2 fs-4"></i>Sin Aquis
                             </h5>
                             <hr>
                             <ul class="list-unstyled">
@@ -77,7 +77,7 @@
                     <div class="card h-100 border-success border-2 shadow-sm">
                         <div class="card-body p-4">
                             <h5 class="card-title text-success d-flex align-items: center">
-                                <i class="bi bi-check-circle-fill me-2 fs-4"></i>Con Aquis (Nuestra Solución)
+                                <i class="bi bi-check-circle-fill me-2 fs-4"></i>Con Aquis
                             </h5>
                             <hr>
                             <ul class="list-unstyled">
@@ -102,18 +102,20 @@
                     <h2 class="mb-4">Hablemos de su proyecto</h2>
                     <p class="lead mb-4">¿Listo para optimizar su próxima obra? Déjenos sus datos y le contactaremos para una demostración.</p>
                     
-                    <form action="#" method="POST">
+                    <form id="contact-form">
                         <div class="mb-3">
-                            <input type="text" class="form-control" placeholder="Su Nombre" required>
+                            <input type="text" id="form-nombre" class="form-control" placeholder="Su Nombre" required>
                         </div>
                         <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Correo Electrónico de la Empresa" required>
+                            <input type="email" id="form-email" class="form-control" placeholder="Correo Electrónico de la Empresa" required>
                         </div>
                         <div class="mb-3">
-                            <textarea class="form-control" rows="5" placeholder="Cuéntenos brevemente sobre su estudio o empresa..." required></textarea>
+                            <textarea id="form-mensaje" class="form-control" rows="5" placeholder="Cuéntenos brevemente sobre su estudio o empresa..." required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-lg">Solicitar Contacto</button>
+                        <button type="submit" id="form-submit-btn" class="btn btn-primary btn-lg">Solicitar Contacto</button>
                     </form>
+
+                    <div id="form-status" class="mt-3"></div>
                 </div>
             </div>
         </div>
@@ -128,25 +130,19 @@
         </div>
     </footer>
 
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const hero = document.querySelector('.hero-section');
-
             if (hero) {
-                // Sigue el movimiento del mouse DENTRO del hero
                 hero.addEventListener('mousemove', (e) => {
                     const rect = hero.getBoundingClientRect();
-                    const x = e.clientX - rect.left; // Posición X dentro del elemento
-                    const y = e.clientY - rect.top;  // Posición Y dentro del elemento
-
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
                     hero.style.setProperty('--mouse-x', `${x}px`);
                     hero.style.setProperty('--mouse-y', `${y}px`);
                 });
-
-                // Opcional: Resetea el efecto cuando el mouse sale
                 hero.addEventListener('mouseleave', () => {
                     hero.style.setProperty('--mouse-x', '50%');
                     hero.style.setProperty('--mouse-y', '50%');
@@ -154,5 +150,55 @@
             }
         });
     </script>
-    </body>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 1. PEGA AQUÍ LA URL de implementación de tu Web App de Apps Script
+            const scriptURL = 'PEGA_AQUI_LA_URL_DE_TU_WEB_APP'; 
+            
+            const form = document.getElementById('contact-form');
+            const submitButton = document.getElementById('form-submit-btn');
+            const statusDiv = document.getElementById('form-status');
+
+            form.addEventListener('submit', e => {
+                e.preventDefault(); 
+                submitButton.disabled = true;
+                submitButton.innerHTML = 'Enviando...';
+                
+                const data = {
+                    nombre: document.getElementById('form-nombre').value,
+                    email: document.getElementById('form-email').value,
+                    mensaje: document.getElementById('form-mensaje').value
+                };
+
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'cors', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data) 
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result === 'success') {
+                        statusDiv.innerHTML = '<div class="alert alert-success" role="alert">¡Gracias! Tu mensaje ha sido enviado.</div>';
+                        form.reset(); 
+                    } else {
+                        throw new Error(data.message || 'Ocurrió un error.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    statusDiv.innerHTML = '<div class="alert alert-danger" role="alert">Error al enviar el mensaje. Por favor, inténtalo de nuevo.</div>';
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = 'Solicitar Contacto';
+                });
+            });
+        });
+    </script>
+
+</body>
 </html>
